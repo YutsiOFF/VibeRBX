@@ -74,18 +74,18 @@
 <nav><div class="wrap">
   <a class="logo" href="#"><b>V</b>VibeRBX</a>
   <div class="links"><a href="#fonctions">Fonctions</a><a href="#agents">Agents</a><a href="#installer">Installer</a><a href="#feuille">Feuille de route</a></div>
-  <a class="btn btn-primary" style="padding:9px 16px;font-size:14px" href="#installer">Télécharger</a>
+  <a class="btn btn-primary dl" style="padding:9px 16px;font-size:14px" href="https://github.com/YutsiOFF/VibeRBX/releases/latest">Télécharger</a>
 </div></nav>
 
 <header class="hero"><div class="wrap">
-  <div class="pill"><i></i> Version 0.1.0 · Windows 10 / 11</div>
+  <div class="pill"><i></i> <span class="ver">Dernière version</span> · Windows 10 / 11</div>
   <h1>Une idée.<br /><em>Un jeu Roblox.</em></h1>
   <p>VibeRBX est un studio de création de jeux Roblox où plusieurs agents IA travaillent ensemble : ils codent en Luau, modélisent dans Blender et branchent tout sur Roblox Studio.</p>
   <div class="cta">
-    <a class="btn btn-primary" href="https://github.com/YutsiOFF/VibeRBX/releases/latest">⬇ Télécharger pour Windows</a>
+    <a class="btn btn-primary dl" href="https://github.com/YutsiOFF/VibeRBX/releases/latest">⬇ Télécharger pour Windows</a>
     <a class="btn btn-ghost" href="#fonctions">Découvrir</a>
   </div>
-  <div class="small">Gratuit · utilise tes propres comptes IA · aucune clé API obligatoire</div>
+  <div class="small"><span class="dlinfo">Installateur Windows</span> · utilise tes propres comptes IA · aucune clé API obligatoire</div>
   <div class="shot reveal"><img src="assets/agents.png" alt="Interface de VibeRBX : agent IA au travail" /></div>
 </div></header>
 
@@ -132,7 +132,7 @@
 <section id="installer"><div class="wrap">
   <h2 class="reveal">Installer en <em>trois étapes</em></h2>
   <div class="steps">
-    <div class="card reveal"><h3>Télécharge</h3><p>Récupère <code>VibeRBX-Setup-0.1.0.exe</code> dans la dernière version publiée et lance-le.</p></div>
+    <div class="card reveal"><h3>Télécharge</h3><p>Clique sur « Télécharger » : l’installateur de la dernière version se télécharge directement. Lance-le.</p></div>
     <div class="card reveal"><h3>Autorise</h3><p>L'installateur n'est pas encore signé : Windows peut afficher « Éditeur inconnu ». Clique sur « Informations complémentaires » puis « Exécuter quand même ».</p></div>
     <div class="card reveal"><h3>Connecte</h3><p>Dans Agents IA → Fournisseurs, installe et connecte ton agent. Ajoute Blender MCP et Roblox Studio MCP dans Outils MCP.</p></div>
   </div>
@@ -155,7 +155,7 @@
 <div class="wrap final"><div class="box reveal">
   <h2>Prêt à créer <em>ton jeu ?</em></h2>
   <p class="lead" style="margin:10px auto 30px">Télécharge VibeRBX et lance tes premiers agents.</p>
-  <a class="btn btn-primary" href="https://github.com/YutsiOFF/VibeRBX/releases/latest">⬇ Télécharger pour Windows</a>
+  <a class="btn btn-primary dl" href="https://github.com/YutsiOFF/VibeRBX/releases/latest">⬇ Télécharger pour Windows</a>
 </div></div>
 
 <footer><div class="wrap">
@@ -164,6 +164,19 @@
 </div></footer>
 
 <script>
+  // Toujours la dernière version publiée : lit la release « latest » et pointe les boutons vers le .exe.
+  fetch('https://api.github.com/repos/YutsiOFF/VibeRBX/releases/latest')
+    .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+    .then((rel) => {
+      const exe = (rel.assets || []).find((a) => /\.exe$/i.test(a.name))
+      const v = (rel.tag_name || '').replace(/^v/, '')
+      document.querySelectorAll('.ver').forEach((el) => (el.textContent = 'Version ' + v))
+      if (!exe) return
+      const mb = Math.round(exe.size / 1048576)
+      document.querySelectorAll('.dl').forEach((a) => { a.href = exe.browser_download_url; a.setAttribute('download', exe.name) })
+      document.querySelectorAll('.dlinfo').forEach((el) => (el.textContent = `v${v} · ${mb} Mo`))
+    })
+    .catch(() => {})
   const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))), { threshold: 0.12 })
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el))
 </script>
