@@ -165,7 +165,7 @@
 
 <script>
   // Toujours la dernière version publiée : lit la release « latest » et pointe les boutons vers le .exe.
-  fetch('https://api.github.com/repos/YutsiOFF/VibeRBX/releases/latest')
+  fetch('https://api.github.com/repos/YutsiOFF/VibeRBX/releases/latest', { cache: 'no-store' })
     .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
     .then((rel) => {
       const exe = (rel.assets || []).find((a) => /\.exe$/i.test(a.name))
