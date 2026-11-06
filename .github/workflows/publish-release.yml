@@ -1,5 +1,6 @@
 # Publie une release à partir d'une branche « drop/vX.Y.Z » contenant uniquement :
-#   version.txt, notes.md et l'installateur découpé (VibeRBX-Setup.exe.part-*).
+#   version.txt, notes.md, l'installateur découpé (VibeRBX-Setup.exe.part-*)
+#   et extra/ (latest.yml + .blockmap lus par la mise à jour automatique de l'app).
 # Le code source de VibeRBX n'est jamais présent dans ce dépôt.
 name: Publier une release
 
@@ -35,7 +36,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.v.outputs.version }}
         run: |
-          gh release create "v$VERSION" "VibeRBX-Setup-$VERSION.exe" \
+          EXTRA=$(ls extra/* 2>/dev/null || true)   # latest.yml + .blockmap pour les mises à jour automatiques
+          gh release create "v$VERSION" "VibeRBX-Setup-$VERSION.exe" $EXTRA \
             --repo "$GITHUB_REPOSITORY" --target main \
             --title "VibeRBX $VERSION" --notes-file notes.md --latest
 
