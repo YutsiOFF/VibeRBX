@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VibeRBX — Studio de VibeCoding multi-agents pour Roblox</title>
+<meta name="description" content="Crée des jeux Roblox avec plusieurs agents IA : Luau, Blender, Roblox Studio. Par YutsiOFF." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg:#14110e; --panel:#1c1814; --raised:#26211c; --line:#3a332c; --fg:#f0e9e0; --mute:#a09486; --accent:#ff7a3d; --ok:#5ed68c; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); font: 16px/1.6 Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(900px 500px at 80% -5%, rgba(255,122,61,.13), transparent 60%), radial-gradient(700px 400px at 0% 30%, rgba(255,122,61,.05), transparent 60%); }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+  em { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; color: var(--accent); }
+  nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px); background: rgba(20,17,14,.75); border-bottom: 1px solid rgba(58,51,44,.6); }
+  nav .wrap { display: flex; align-items: center; gap: 28px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .logo b { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: #000; font-weight: 900; }
+  nav .links { display: flex; gap: 22px; color: var(--mute); font-size: 14px; margin-left: auto; }
+  nav .links a:hover { color: var(--fg); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 15px; transition: .2s; }
+  .btn-primary { background: var(--accent); color: #000; box-shadow: 0 8px 30px rgba(255,122,61,.25); }
+  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-ghost { border: 1px solid var(--line); }
+  .btn-ghost:hover { border-color: rgba(255,122,61,.6); background: var(--raised); }
+  .hero { padding: 96px 0 56px; text-align: center; }
+  .pill { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13px; color: var(--mute); margin-bottom: 26px; }
+  .pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok); }
+  h1 { font-size: clamp(42px, 7vw, 78px); line-height: 1.05; letter-spacing: -.03em; font-weight: 700; }
+  .hero p { max-width: 640px; margin: 22px auto 34px; color: var(--mute); font-size: 18px; }
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .small { margin-top: 14px; font-size: 13px; color: var(--mute); }
+  .shot { margin: 64px auto 0; border-radius: 18px; border: 1px solid var(--line); overflow: hidden; box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 0 8px rgba(255,255,255,.02); }
+  .shot img { display: block; width: 100%; }
+  section { padding: 90px 0; }
+  h2 { font-size: clamp(30px, 4vw, 44px); letter-spacing: -.02em; line-height: 1.1; margin-bottom: 14px; }
+  .lead { color: var(--mute); max-width: 620px; font-size: 17px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 44px; }
+  .card { background: rgba(28,24,20,.8); border: 1px solid rgba(58,51,44,.7); border-radius: 16px; padding: 26px; transition: .25s; }
+  .card:hover { border-color: rgba(255,122,61,.45); transform: translateY(-3px); }
+  .card .ic { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,122,61,.12); color: var(--accent); font-size: 20px; margin-bottom: 16px; }
+  .card h3 { font-size: 17px; margin-bottom: 6px; }
+  .card p { color: var(--mute); font-size: 14.5px; }
+  .split { display: grid; grid-template-columns: 1fr 1.25fr; gap: 56px; align-items: center; }
+  .split.rev { grid-template-columns: 1.25fr 1fr; }
+  .split img { width: 100%; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+  ul.check { list-style: none; margin-top: 22px; display: grid; gap: 10px; }
+  ul.check li { padding-left: 28px; position: relative; color: var(--fg); }
+  ul.check li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .agents { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .agents span { font-family: 'JetBrains Mono', monospace; font-size: 13px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; background: var(--panel); }
+  .steps { counter-reset: s; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+  .steps .card::before { counter-increment: s; content: counter(s); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--accent); color: var(--accent); font-weight: 700; margin-bottom: 14px; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--raised); padding: 2px 7px; border-radius: 6px; }
+  .road { display: grid; gap: 10px; margin-top: 36px; }
+  .road div { display: flex; gap: 16px; align-items: center; padding: 16px 20px; border: 1px solid rgba(58,51,44,.7); border-radius: 12px; background: rgba(28,24,20,.6); }
+  .road b { font-family: 'JetBrains Mono', monospace; color: var(--accent); min-width: 80px; font-size: 13px; }
+  .road .st { margin-left: auto; font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--mute); white-space: nowrap; }
+  .road .st.ok { color: var(--ok); border-color: rgba(94,214,140,.4); }
+  .final { text-align: center; padding: 110px 0; }
+  .final .box { border: 1px solid var(--line); border-radius: 24px; padding: 64px 28px; background: radial-gradient(600px 300px at 50% 0%, rgba(255,122,61,.15), transparent 70%), var(--panel); }
+  footer { border-top: 1px solid rgba(58,51,44,.6); padding: 34px 0; color: var(--mute); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (max-width: 860px) { .grid, .steps, .split, .split.rev { grid-template-columns: 1fr; } nav .links { display: none; } }
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="#"><b>V</b>VibeRBX</a>
+  <div class="links"><a href="#fonctions">Fonctions</a><a href="#agents">Agents</a><a href="#installer">Installer</a><a href="#feuille">Feuille de route</a></div>
+  <a class="btn btn-primary" style="padding:9px 16px;font-size:14px" href="#installer">Télécharger</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="pill"><i></i> Version 0.1.0 · Windows 10 / 11</div>
+  <h1>Une idée.<br /><em>Un jeu Roblox.</em></h1>
+  <p>VibeRBX est un studio de création de jeux Roblox où plusieurs agents IA travaillent ensemble : ils codent en Luau, modélisent dans Blender et branchent tout sur Roblox Studio.</p>
+  <div class="cta">
+    <a class="btn btn-primary" href="https://github.com/YutsiOFF/VibeRBX/releases/latest">⬇ Télécharger pour Windows</a>
+    <a class="btn btn-ghost" href="#fonctions">Découvrir</a>
+  </div>
+  <div class="small">Gratuit · utilise tes propres comptes IA · aucune clé API obligatoire</div>
+  <div class="shot reveal"><img src="assets/agents.png" alt="Interface de VibeRBX : agent IA au travail" /></div>
+</div></header>
+
+<section id="fonctions"><div class="wrap">
+  <h2 class="reveal">Pas un chatbot. <em>Un vrai studio.</em></h2>
+  <p class="lead reveal">Les agents ne se contentent pas de générer du code à copier : ils utilisent de vrais logiciels grâce au protocole MCP.</p>
+  <div class="grid">
+    <div class="card reveal"><div class="ic">◆</div><h3>Agents en parallèle</h3><p>Plusieurs agents sur le même projet, chacun avec sa conversation, son modèle, son rôle et ses outils. Les sessions sont conservées.</p></div>
+    <div class="card reveal"><div class="ic">▲</div><h3>Blender par défaut</h3><p>Connexion réelle à Blender via MCP : création d'objets, matériaux, scènes. Les fichiers .blend sont conservés dans le projet.</p></div>
+    <div class="card reveal"><div class="ic">●</div><h3>Roblox Studio branché</h3><p>Serveur MCP officiel de Studio : lecture du jeu, exécution Luau, playtest et console accessibles aux agents.</p></div>
+    <div class="card reveal"><div class="ic">✦</div><h3>Choix du modèle expliqué</h3><p>Le routage automatique recommande le bon modèle pour chaque tâche et dit pourquoi, parmi les outils installés sur ton PC.</p></div>
+    <div class="card reveal"><div class="ic">↺</div><h3>Historique & restauration</h3><p>Points de sauvegarde, comparaison des versions et restauration avec sauvegarde de sécurité automatique.</p></div>
+    <div class="card reveal"><div class="ic">⌘</div><h3>Pensé pour aller vite</h3><p>Onglets de projets, palette de commandes Ctrl+K, thème sombre ou clair, interface française et anglaise.</p></div>
+  </div>
+</div></section>
+
+<section id="agents"><div class="wrap split">
+  <div class="reveal">
+    <h2>Tes comptes. <em>Tes agents.</em></h2>
+    <p class="lead">VibeRBX lance la CLI officielle de chaque fournisseur. Tu te connectes avec ton abonnement : tes identifiants ne sont jamais lus ni partagés.</p>
+    <div class="agents"><span>Claude Code</span><span>Codex</span><span>Gemini CLI</span><span>OpenCode</span><span>Modèles locaux</span></div>
+    <ul class="check">
+      <li>Envoie une instruction à un agent ou à plusieurs à la fois</li>
+      <li>Pause, reprise et arrêt à tout moment</li>
+      <li>Permissions par agent : suppression et publication sous validation</li>
+    </ul>
+  </div>
+  <img class="reveal" src="assets/mcp.png" alt="Gestionnaire MCP avec Blender connecté" />
+</div></section>
+
+<section><div class="wrap split rev">
+  <img class="reveal" src="assets/historique.png" alt="Historique des versions" />
+  <div class="reveal">
+    <h2>Rien n'est <em>jamais perdu.</em></h2>
+    <p class="lead">Chaque projet est un dossier Rojo propre avec son historique. Reviens en arrière, compare, restaure.</p>
+    <ul class="check">
+      <li>Arborescence Roblox prête : serveur, client, partagé, UI</li>
+      <li>Dossiers sources Blender et exports séparés</li>
+      <li>Contexte partagé lu par tous les agents</li>
+    </ul>
+  </div>
+</div></section>
+
+<section id="installer"><div class="wrap">
+  <h2 class="reveal">Installer en <em>trois étapes</em></h2>
+  <div class="steps">
+    <div class="card reveal"><h3>Télécharge</h3><p>Récupère <code>VibeRBX-Setup-0.1.0.exe</code> dans la dernière version publiée et lance-le.</p></div>
+    <div class="card reveal"><h3>Autorise</h3><p>L'installateur n'est pas encore signé : Windows peut afficher « Éditeur inconnu ». Clique sur « Informations complémentaires » puis « Exécuter quand même ».</p></div>
+    <div class="card reveal"><h3>Connecte</h3><p>Dans Agents IA → Fournisseurs, installe et connecte ton agent. Ajoute Blender MCP et Roblox Studio MCP dans Outils MCP.</p></div>
+  </div>
+  <p class="small" style="text-align:left;margin-top:22px">Recommandé : Git, Blender 3.0+, uv (<code>winget install astral-sh.uv</code>), Roblox Studio et Rojo.</p>
+</div></section>
+
+<section id="feuille"><div class="wrap">
+  <h2 class="reveal">Feuille de <em>route</em></h2>
+  <p class="lead reveal">VibeRBX avance par phases. Une fonction n'est annoncée comme disponible qu'une fois testée.</p>
+  <div class="road">
+    <div class="reveal"><b>v0.1</b>Application, projets, agents, gestionnaire MCP, historique<span class="st ok">Disponible</span></div>
+    <div class="reveal"><b>Phase 3</b>Orchestrateur multi-agents avec dépendances entre tâches<span class="st">En cours</span></div>
+    <div class="reveal"><b>Phase 5</b>Pipeline Blender → export → import automatique dans Studio<span class="st">Prévu</span></div>
+    <div class="reveal"><b>Phase 6</b>Éditeur UI / HUD intégré exporté en vraies instances Roblox<span class="st">Prévu</span></div>
+    <div class="reveal"><b>Phase 7</b>Connexion Roblox officielle et plugin Studio<span class="st">Prévu</span></div>
+    <div class="reveal"><b>Phase 8–9</b>Collaboration temps réel et bibliothèque d'assets communautaire<span class="st">Prévu</span></div>
+  </div>
+</div></section>
+
+<div class="wrap final"><div class="box reveal">
+  <h2>Prêt à créer <em>ton jeu ?</em></h2>
+  <p class="lead" style="margin:10px auto 30px">Télécharge VibeRBX et lance tes premiers agents.</p>
+  <a class="btn btn-primary" href="https://github.com/YutsiOFF/VibeRBX/releases/latest">⬇ Télécharger pour Windows</a>
+</div></div>
+
+<footer><div class="wrap">
+  <span>© 2026 VibeRBX · créé par <b style="color:var(--fg)">YutsiOFF</b></span>
+  <span>Projet indépendant, non affilié à Roblox Corporation.</span>
+</div></footer>
+
+<script>
+  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))), { threshold: 0.12 })
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el))
+</script>
+</body>
+</html>
